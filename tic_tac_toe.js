@@ -1,3 +1,4 @@
+// For experiments
 // function tic_tac_toe (board){
 //     const score = 0
 //     const player_one = []
@@ -7,16 +8,33 @@
 //     }
 // }
 
+function board(){
+    const board = []
+    const  player1 = 'X'
+    const  player2 = 'O'
 
-//  Forsome reason, this is not working
-    let board = []
-    for(let i; i > 10; i++){
-    // if( i%2 === 0){
-    // board.push('|')
-    // }
-    // else{
-    board.push[i]
-    // }
-    }
+        for(let i = 0; i < 3; i++){
+        let row = []
 
- console.log(board)
+        for(let j = 0; j < 3; j++){
+            row.push('#')
+        }
+        board.push(row)
+        }    
+
+        // replace aint replacing
+        for (row in board){
+            board[row].push(`This row's number is ${row}`)
+            for (cell in row){
+
+                if (Math.random() < 0.5) {
+                board[row][cell].replace('#', player1);
+                } else {
+                board[row][cell].replace('#', player2);
+                }
+            }
+        }
+
+    console.log(board)
+}
+board()
