@@ -1,13 +1,3 @@
-// For experiments
-// function tic_tac_toe (board){
-//     const score = 0
-//     const player_one = []
-//     const player_two = []
-//     return Game = () => {
-
-//     }
-// }
-
 function board(){
     const board = []
     const  player1 = 'X'
@@ -22,19 +12,36 @@ function board(){
         board.push(row)
         }    
 
-        // replace aint replacing
-        for (row in board){
-            board[row].push(`This row's number is ${row}`)
-            for (cell in row){
+        function fill_loaction_with(row, column, value){
+            return   board[row][column] = value
+        }
 
-                if (Math.random() < 0.5) {
-                board[row][cell].replace('#', player1);
-                } else {
-                board[row][cell].replace('#', player2);
+        // Playing the game randomly
+        function random_game(){
+            for (row in board){
+                for (column in board){
+
+                    if (Math.random() < 0.5) {
+                    fill_loaction_with(row, column, player1)
+                    }
+                    else {
+                    fill_loaction_with(row, column, player2)
+                    }
                 }
             }
         }
 
-    console.log(board)
+        random_game()
+
+
+        // Winning conditions
+        // function Winning(){
+        // for (i in board){}
+        // }
+
+        return board
 }
-board()
+// A winning condition and a score method are necessary
+
+
+console.log(board())
