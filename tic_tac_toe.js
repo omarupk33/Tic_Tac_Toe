@@ -1,47 +1,77 @@
-function board(){
-    const board = []
-    const  player1 = 'X'
-    const  player2 = 'O'
+function tic_tac_toe(){
+    const Gameboard = {
+        gameboard: [],
 
+        fillingBoard: ()=>{
         for(let i = 0; i < 3; i++){
         let row = []
-
         for(let j = 0; j < 3; j++){
-            row.push('#')
-        }
-        board.push(row)
-        }    
+            row.push('#')}
+        Gameboard.gameboard.push(row)}    
+        },
 
-        function fill_loaction_with(row, column, value){
-            return   board[row][column] = value
-        }
+        // getRow:(numberOfrow)=>{
+        //    return Gameboard.gameboard[numberOfrow]
+        // },
+        convertCell(row, column, value){
+            return Gameboard.gameboard[row][column] = value
+        },
 
-        // Playing the game randomly
+        getCell:(row, column)=> {
+            return Gameboard.gameboard[row][column] = value
+        }
+    }
+
+    const  player1 = {
+        mark: 'X',
+        score: 0
+    }
+    const  player2 = {
+        mark:'O',
+        score: 0
+    }
         function random_game(){
-            for (row in board){
-                for (column in board){
-
+        Gameboard.fillingBoard()
+            for (row in Gameboard.gameboard){
+                for (column in Gameboard.gameboard){
                     if (Math.random() < 0.5) {
-                    fill_loaction_with(row, column, player1)
+                    Gameboard.convertCell(row, column, player1.mark)
                     }
                     else {
-                    fill_loaction_with(row, column, player2)
+                    Gameboard.convertCell(row, column, player2.mark)
                     }
                 }
             }
         }
+        Gameboard.fillingBoard()
+        // random_game()
+        for(let i = 0; i < 3;i++){Gameboard.convertCell(i,0, 'Hello')}
 
-        random_game()
-
-
-        // Winning conditions
-        // function Winning(){
-        // for (i in board){}
-        // }
-
-        return board
+        return Gameboard
 }
 // A winning condition and a score method are necessary
 
+console.log(tic_tac_toe().gameboard)
 
-console.log(board())
+
+        // Winning conditions
+
+        function Winning(board){
+            for (row in board){
+                if (board.getCell(row,0) === board.getCell(row,1)
+                    &&
+                    board.getCell(row,1) === board.getCell(row,2))
+                    {console.log('Column winner')}
+            }
+
+        // for (column in board)
+            
+        // // I should move through the board horizontally first
+        //     // I guess the only way to do it is to 
+            
+        //     {
+        //     if (baord[row][cell] === baord[])
+        // }
+        }
+
+Winning(tic_tac_toe())
