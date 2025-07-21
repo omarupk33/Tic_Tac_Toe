@@ -18,7 +18,7 @@ function tic_tac_toe(){
         },
 
         getCell:(row, column)=> {
-            return Gameboard.gameboard[row][column] = value
+            return Gameboard.gameboard[row][column]
         }
     }
 
@@ -51,18 +51,29 @@ function tic_tac_toe(){
 }
 // A winning condition and a score method are necessary
 
-console.log(tic_tac_toe().gameboard)
+// console.log(tic_tac_toe().gameboard)
 
 
         // Winning conditions
 
-        function Winning(board){
-            for (row in board){
-                if (board.getCell(row,0) === board.getCell(row,1)
-                    &&
-                    board.getCell(row,1) === board.getCell(row,2))
-                    {console.log('Column winner')}
+function winning_conditions(board){
+    board.convertCell(1,1, 'thing')  
+                // Checking if anyone won in columns! 
+                for(column in board.gameboard){
+                    console.log('It worked')
+                for (row in board.gameboard){
+                if (board.getCell(row,column) === board.getCell(row,column)
+                &&
+                board.getCell(row,column) === board.getCell(row,column))
+                {console.log('It worked')}
+                else
+                {console.log('It It did not work')}
+                }
             }
+}
+
+
+        // function winning(board){
 
         // for (column in board)
             
@@ -72,6 +83,6 @@ console.log(tic_tac_toe().gameboard)
         //     {
         //     if (baord[row][cell] === baord[])
         // }
-        }
+        // }
 
-Winning(tic_tac_toe())
+winning_conditions(tic_tac_toe())
