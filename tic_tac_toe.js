@@ -10,9 +10,9 @@ function tic_tac_toe(){
         Gameboard.gameboard.push(row)}    
         },
 
-        // getRow:(numberOfrow)=>{
-        //    return Gameboard.gameboard[numberOfrow]
-        // },
+        getDiagonal:(diagonal_cell)=>{
+           return Gameboard.gameboard[diagonal_cell][diagonal_cell]
+        },
         convertCell(row, column, value){
             return Gameboard.gameboard[row][column] = value
         },
@@ -45,31 +45,47 @@ function tic_tac_toe(){
         }
         Gameboard.fillingBoard()
         // random_game()
-        for(let i = 0; i < 3;i++){Gameboard.convertCell(i,0, 'Hello')}
+        Gameboard.convertCell(1,1, 2)
 
         return Gameboard
 }
 // A winning condition and a score method are necessary
-
-// console.log(tic_tac_toe().gameboard)
-
+      
+console.log(tic_tac_toe().gameboard)
 
         // Winning conditions
 
 function winning_conditions(board){
-    board.convertCell(1,1, 'thing')  
                 // Checking if anyone won in columns! 
-                for(column in board.gameboard){
-                    console.log('It worked')
                 for (row in board.gameboard){
-                if (board.getCell(row,column) === board.getCell(row,column)
+                if (board.getCell(row,0) === board.getCell(row,1)
                 &&
-                board.getCell(row,column) === board.getCell(row,column))
+                board.getCell(row,1) === board.getCell(row,2))
                 {console.log('It worked')}
-                else
-                {console.log('It It did not work')}
+                else{console.log('It did not work')}
                 }
-            }
+
+                // Checking if anyone won in rows! 
+                for(column in board.gameboard){
+                if (board.getCell(0, column) === board.getCell(1, column)
+                &&
+                board.getCell(1, column) === board.getCell(2, column))
+                {console.log('It worked')}
+                else{console.log('It did not work')}
+                }
+                // Checking if anyone won in diagonally! 
+                //  Maybe we should use the function getDiagonal instead of this mess
+                let diagonal = 0
+                if (board.getCell(diagonal, diagonal) === board.getCell(diagonal + 1, diagonal + 1)
+                    &&
+                    board.getCell(diagonal + 1, diagonal, + 1) === board.getCell(diagonal + 2, diagonal + 2)
+                ||
+                    board.getCell( diagonal, diagonal) === board.getCell(1 - diagonal,1 - diagonal)
+                    &&
+                    board.getCell(1 - diagonal,1 - diagonal === board.getCell(2 - diagonal, 2 - diagonal))
+            )
+                {console.log('It worked')}
+                else{console.log('It did not work')}
 }
 
 
