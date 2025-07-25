@@ -46,63 +46,49 @@ function tic_tac_toe(){
                 }
             }
         }
-        Gameboard.fillingBoard()
-        for (i in Gameboard.gameboard){
-            let location = Gameboard.getDiagonal(i)
-            Gameboard.convertCell(i, i, 'hey')
-        }
+        random_game()
 
         return Gameboard
 }
 // A winning condition and a score method are necessary
       
-console.log(tic_tac_toe())
-
         // Winning conditions
 
 function winning_conditions(board){
-                // Checking if anyone won in columns! 
+                // Checking if anyone won in rows! 
                 for (row in board.gameboard){
                 if (board.getCell(row,0) === board.getCell(row,1)
                 &&
                 board.getCell(row,1) === board.getCell(row,2))
-                {console.log('It worked')}
-                else{console.log('It did not work')}
+                {console.log('Win in rows')}
+                else{console.log('Did not win in rows')
+                }
                 }
 
-                // Checking if anyone won in rows! 
+                // Checking if anyone won in columns! 
                 for(column in board.gameboard){
                 if (board.getCell(0, column) === board.getCell(1, column)
                 &&
                 board.getCell(1, column) === board.getCell(2, column))
-                {console.log('It worked')}
-                else{console.log('It did not work')}
+                {console.log('Win in columns')}
+                else{console.log('Did not win in columns')
                 }
-                // Checking if anyone won in diagonally! 
-                //  Maybe we should use the function getDiagonal instead of this mess
+                }
+                // Checking if anyone won diagonally! 
                 let diagonal = 0
                 if (board.getDiagonal(diagonal) === board.getDiagonal(diagonal + 1)
                     &&
                     board.getDiagonal(diagonal + 1) === board.getDiagonal(diagonal + 2)
                 ||
-                    board.getDiagonal(diagonal - 1) === board.getDiagonal(diagonal - 2)
+                // For reversed diagonals
+                    board.getCell(2, 0) === board.getDiagonal(1)
                     &&
-                    board.getDiagonal(diagonal - 2) === board.getDiagonal(diagonal - 3))
-                {console.log('it is diagonal ')}
+                    board.getDiagonal(1) === board.getCell(0, 2))
+                {console.log('it is a diagonal win')}
                 else{console.log('It is not diagonal')}
+
+                console.log(board.gameboard)
 }
 
-
-        // function winning(board){
-
-        // for (column in board)
-            
-        // // I should move through the board horizontally first
-        //     // I guess the only way to do it is to 
-            
-        //     {
-        //     if (baord[row][cell] === baord[])
-        // }
-        // }
-
+// Finally  Some winning logic!!
 winning_conditions(tic_tac_toe())
