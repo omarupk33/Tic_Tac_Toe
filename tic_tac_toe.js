@@ -1,18 +1,8 @@
 //  Honestly, there is a lot I need to fix up here.
 //  I don't like how the get functions are a part of the Gameboard object
-
 function tic_tac_toe(){
     const Gameboard = {
         gameboard: [],
-
-        fillingBoard:()=>{
-        for(let i = 0; i < 3; i++){
-        let row = []
-        for(let j = 0; j < 3; j++){
-            row.push('#')}
-        Gameboard.gameboard.push(row)}    
-        },
-
         getDiagonal:(diagonal_cell)=>{
             return Gameboard.gameboard[diagonal_cell][diagonal_cell]
         },
@@ -25,37 +15,44 @@ function tic_tac_toe(){
             return Gameboard.gameboard[row][column]
         }
     }
-    const  player1 = {
+    const player1 = {
         mark: 'X',
         score: 0
     }
-    const  player2 = {
+    const player2 = {
         mark:'O',
         score: 0
     }
 
-    function random_game(){
-    Gameboard.fillingBoard()
-        for (row in Gameboard.gameboard){
-            for (column in Gameboard.gameboard){
-                if (Math.random() < 0.5) {
-                Gameboard.convertCell(row, column, player1.mark)
-                }
-                else {
-               Gameboard.convertCell(row, column, player2.mark)
-                }
+function fillingBoard(){
+    for(let i = 0; i < 3; i++){
+    let row = []
+    for(let j = 0; j < 3; j++){
+        row.push('#')}
+    Gameboard.gameboard.push(row)}    
+    }
+
+function round_winner(player){
+
+    const {player1, player2} = tic_tac_toe()
+    switch(player){
+        case 'X':
+            player1.score++
+            console.log(`The score is ${player1.score} for the player who plays ${player1.mark}`)
+        break
+
+        case 'O':
+            player2.score++
+            console.log(`The score is ${player2.score} for the player who plays ${player2.mark}`)
+            break
             }
         }
-    }
-        random_game()
-    return {Gameboard, player1, player2}
-}
 
 // A winning condition and a score method are necessary
 // Winning conditions
 function winning_conditions(board){
     // Checking if anyone won in rows! 
-    // Should console.log replaced with booleans
+    // Should all console.log replaced with booleans
     for (row in board.gameboard){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
@@ -91,14 +88,30 @@ function winning_conditions(board){
     console.log(board.gameboard)
 }
 
-// Finally  Some winning logic!!
-winning_conditions(tic_tac_toe())
-
-// Now we should create something to detect who won
-function player_winner(){
-    //  Should use player 
-    const {Gameboard, player1, player2} = tic_tac_toe()
+function random_game(){
+    fillingBoard()
+        for (row in Gameboard.gameboard){
+            for (column in Gameboard.gameboard){
+                if (Math.random() < 0.5) {
+                Gameboard.convertCell(row, column, player1.mark)
+                }
+                else {
+            Gameboard.convertCell(row, column, player2.mark)
+                }
+            }
+        }
+    }
+    random_game()
+        // Just return Gameboard to solve most issues
+    return {Gameboard, player1, player2,
+            winning_conditions, round_winner, fillingBoard}
 }
-// Then use the previous inforamtion for a score increasing function and a round winner anouncement
-// We need a game winner anouncement as well!!
 
+// I don't know what to do honestly
+function main_loop(){
+    const {Gameboard, player1, player2, winning_conditions, 
+           round_winner, fillingBoard} = tic_tac_toe()
+    console.log(Gameboard.gameboard)
+}
+
+main_loop()
