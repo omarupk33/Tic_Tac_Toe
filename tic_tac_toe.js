@@ -148,3 +148,11 @@ for(let k = 0; k < 2; k++){startGame()}
 // }
 
 // main_loop()
+
+
+// Working on the dom and started styling for it
+
+const container = document.querySelector('.container')
+const element = document.createElement('button')
+element.textContent = 'hey'
+container.appendChild(element)
