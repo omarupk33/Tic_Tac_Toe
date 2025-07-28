@@ -1,5 +1,10 @@
 //  Honestly, there is a lot I need to fix up here.
 //  I don't like how the get functions are a part of the Gameboard object
+const scoreSave= {
+    player1_score: 0,
+    player2_score: 0}
+
+
 function tic_tac_toe(){
     const Gameboard = {
         gameboard: [],
@@ -15,6 +20,7 @@ function tic_tac_toe(){
             return Gameboard.gameboard[row][column]
         }
     }
+    // I want to way to update the score without losing my track of the game
     const player1 = {
         mark: 'X',
         score: 0
@@ -32,33 +38,40 @@ function fillingBoard(){
     Gameboard.gameboard.push(row)}    
     }
 
-function round_winner(player){
-
-    const {player1, player2} = tic_tac_toe()
-    switch(player){
+function update_score(mark){
+    switch(mark){
         case 'X':
-            player1.score++
+            scoreSave.player1_score += 1
+            player1.score = scoreSave.player1_score
+
             console.log(`The score is ${player1.score} for the player who plays ${player1.mark}`)
         break
 
         case 'O':
-            player2.score++
+            scoreSave.player2_score += 1
+            player2.score = scoreSave.player2_score
             console.log(`The score is ${player2.score} for the player who plays ${player2.mark}`)
             break
+        default:
+        console.log('It ended with a tie');
             }
         }
 
 // A winning condition and a score method are necessary
 // Winning conditions
-function winning_conditions(board){
+function finding_a_winner(board){
     // Checking if anyone won in rows! 
     // Should all console.log replaced with booleans
+    let winner_mark;
+    
     for (row in board.gameboard){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
     board.getCell(row,1) === board.getCell(row,2))
-    {console.log('Win in rows')}
-    else{console.log('Did not win in rows')
+    {console.log(`${board.getCell(row,1)} is winner in rows`)
+        winner_mark = board.getCell(row,1) 
+        break}
+    else{console.log('no on won in rows')
     }
     }
 
@@ -67,8 +80,10 @@ function winning_conditions(board){
     if (board.getCell(0, column) === board.getCell(1, column)
     &&
     board.getCell(1, column) === board.getCell(2, column))
-    {console.log('Win in columns')}
-    else{console.log('Did not win in columns')
+    {console.log(`${board.getCell(1,column)} is winner in columns`)
+        winner_mark = board.getCell(1, column)
+        break}
+    else{console.log('no on won in columns')
     }
 
     }
@@ -82,10 +97,12 @@ function winning_conditions(board){
         board.getCell(2, 0) === board.getDiagonal(1)
         &&
         board.getDiagonal(1) === board.getCell(0, 2))
-    {console.log('it is a diagonal win')}
+    {console.log(`${board.getDiagonal(1)} is winner diagonally`)
+        winner_mark = board.getDiagonal(1)
+        return winner_mark}
     else{console.log('It is not diagonal')}
 
-    console.log(board.gameboard)
+    return winner_mark
 }
 
 function random_game(){
@@ -101,17 +118,33 @@ function random_game(){
             }
         }
     }
-    random_game()
         // Just return Gameboard to solve most issues
-    return {Gameboard, player1, player2,
-            winning_conditions, round_winner, fillingBoard}
+    return {Gameboard, finding_a_winner,
+         update_score, random_game}
 }
+
+// Start game
+function startGame(){
+    const {Gameboard, finding_a_winner, 
+    update_score, random_game} = tic_tac_toe()
+
+    // random game (Should be changed to play_game())
+        random_game()
+    // check if there is a winner
+    // finding_a_winner(gameboard.gameboard)
+    console.log(Gameboard.gameboard)
+    let theWinnerMark = finding_a_winner(Gameboard)
+    update_score(theWinnerMark)
+    
+}
+
+for(let k = 0; k < 2; k++){startGame()}
+
 
 // I don't know what to do honestly
-function main_loop(){
-    const {Gameboard, player1, player2, winning_conditions, 
-           round_winner, fillingBoard} = tic_tac_toe()
-    console.log(Gameboard.gameboard)
-}
+// function main_loop(){
 
-main_loop()
+//     // Gameboard.gameboard
+// }
+
+// main_loop()
