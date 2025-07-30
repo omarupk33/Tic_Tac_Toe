@@ -5,7 +5,7 @@ const scoreSave= {
     player2_score: 0}
 
 
-function tic_tac_toe(){
+function tic_tac_toe_settings(){
     const Gameboard = {
         gameboard: [],
         getDiagonal:(diagonal_cell)=>{
@@ -63,13 +63,17 @@ function finding_a_winner(board){
     // Checking if anyone won in rows! 
     // Should all console.log replaced with booleans
     let winner_mark;
+    let winner_found = false
     
     for (row in board.gameboard){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
-    board.getCell(row,1) === board.getCell(row,2))
-    {console.log(`${board.getCell(row,1)} is winner in rows`)
+    board.getCell(row,1) === board.getCell(row,2)){
+        
+        console.log(`${board.getCell(row,1)} is winner in rows`)
+
         winner_mark = board.getCell(row,1) 
+        winner_found = true
         break}
     else{console.log('no on won in rows')
     }
@@ -79,33 +83,38 @@ function finding_a_winner(board){
     for(column in board.gameboard){
     if (board.getCell(0, column) === board.getCell(1, column)
     &&
-    board.getCell(1, column) === board.getCell(2, column))
-    {console.log(`${board.getCell(1,column)} is winner in columns`)
+    board.getCell(1, column) === board.getCell(2, column)){
+        
+        console.log(`${board.getCell(1,column)} is winner in columns`)
+        
         winner_mark = board.getCell(1, column)
+        winner_found = true
         break}
     else{console.log('no on won in columns')
     }
 
     }
     // Checking if anyone won diagonally!
-    let diagonal = 0
-    if (board.getDiagonal(diagonal) === board.getDiagonal(diagonal + 1)
+    let center = 0
+    if (board.getDiagonal(center) === board.getDiagonal(center + 1)
         &&
-        board.getDiagonal(diagonal + 1) === board.getDiagonal(diagonal + 2)
-    ||
+        board.getDiagonal(center + 1) === board.getDiagonal(center + 2)
+        ||
     // For reversed diagonals
         board.getCell(2, 0) === board.getDiagonal(1)
         &&
-        board.getDiagonal(1) === board.getCell(0, 2))
-    {console.log(`${board.getDiagonal(1)} is winner diagonally`)
+        board.getDiagonal(1) === board.getCell(0, 2)){
+            
+        console.log(`${board.getDiagonal(1)} is winner diagonally`)
         winner_mark = board.getDiagonal(1)
-        return winner_mark}
+        winner_found = true
+        }
     else{console.log('It is not diagonal')}
 
-    return winner_mark
+    return {winner_mark, winner_found}
 }
 
-function random_game(){
+function bot(){
     fillingBoard()
         for (row in Gameboard.gameboard){
             for (column in Gameboard.gameboard){
@@ -119,26 +128,26 @@ function random_game(){
         }
     }
     return {Gameboard, finding_a_winner,
-         update_score, random_game}
+         update_score, bot}
 }
 
 // Start game
 function startGame(){
     const {Gameboard, finding_a_winner, 
-    update_score, random_game} = tic_tac_toe()
+    update_score, bot} = tic_tac_toe_settings()
 
     // random game (Should be changed to play_game())
-        random_game()
+        bot()
     // check if there is a winner
     // finding_a_winner(gameboard.gameboard)
     console.log(Gameboard.gameboard)
-    let theWinnerMark = finding_a_winner(Gameboard)
+    let theWinnerMark = finding_a_winner(Gameboard).winner_mark
     update_score(theWinnerMark)
     
 }
 
 
-// for(let k = 0; k < 10; k++){startGame()}
+for(let k = 0; k < 10; k++){startGame()}
 
 
 // Working on DOM and started styling
@@ -153,11 +162,28 @@ for(let i = 0; i < 3; ++i){
     const button = document.createElement('button')
     button.style.height = '165px'
     button.style.width = '165px'
-    button.textContent = 'O'
+    // button.textContent = 'O'
     button.style.fontSize = '80px'
 
     row.appendChild(button)
     }
         container.appendChild(row)
-
 }
+const allButtons = document.querySelectorAll('button')
+    let switcher = true
+    allButtons.forEach((button)=>{
+        button.addEventListener('click', ()=>{
+            if(!button.textContent ){
+                if (switcher){
+                    button.textContent = 'O'
+                    switcher = false
+                }
+                else{
+                button.textContent = 'X'
+                switcher = true
+                }
+            }
+        })
+    })
+
+// console.log(allButtons)
