@@ -118,7 +118,6 @@ function random_game(){
             }
         }
     }
-        // Just return Gameboard to solve most issues
     return {Gameboard, finding_a_winner,
          update_score, random_game}
 }
@@ -138,19 +137,11 @@ function startGame(){
     
 }
 
-for(let k = 0; k < 2; k++){startGame()}
+
+// for(let k = 0; k < 10; k++){startGame()}
 
 
-// I don't know what to do honestly
-// function main_loop(){
-
-//     // Gameboard.gameboard
-// }
-
-// main_loop()
-
-
-// Working on the dom and started styling for it
+// Working on DOM and started styling
 
 const container = document.querySelector('.container')
 

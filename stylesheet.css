@@ -16,3 +16,18 @@ body{
     justify-content: center;
     align-items: center;
 }
+
+#player, #opponent{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;  
+    border: 3px greenyellow solid;
+    font-size: 1.5em;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#player > *, #opponent > *{
+    display: flex;
+    margin: 10px;    
+}
