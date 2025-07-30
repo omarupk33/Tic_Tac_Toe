@@ -153,6 +153,20 @@ for(let k = 0; k < 2; k++){startGame()}
 // Working on the dom and started styling for it
 
 const container = document.querySelector('.container')
-const element = document.createElement('button')
-element.textContent = 'hey'
-container.appendChild(element)
+
+for(let i = 0; i < 3; ++i){
+    let row = document.createElement('div')
+
+    for (let j =0; j < 3;++j){
+        
+    const button = document.createElement('button')
+    button.style.height = '165px'
+    button.style.width = '165px'
+    button.textContent = 'O'
+    button.style.fontSize = '80px'
+
+    row.appendChild(button)
+    }
+        container.appendChild(row)
+
+}
