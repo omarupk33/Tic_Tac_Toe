@@ -30,11 +30,11 @@ function tic_tac_toe_settings(){
         score: 0
     }
 
-function fillingBoard(){
+function fillingBoard(filler = '#'){
     for(let i = 0; i < 3; i++){
     let row = []
     for(let j = 0; j < 3; j++){
-        row.push('#')}
+        row.push(filler)}
     Gameboard.gameboard.push(row)}    
     }
 
@@ -127,63 +127,84 @@ function bot(){
             }
         }
     }
-    return {Gameboard, finding_a_winner,
+    return {Gameboard, finding_a_winner, fillingBoard,
          update_score, bot}
 }
 
 // Start game
-function startGame(){
-    const {Gameboard, finding_a_winner, 
-    update_score, bot} = tic_tac_toe_settings()
+// function startGame(){
+//     const {Gameboard, finding_a_winner, 
+//     update_score, bot} = tic_tac_toe_settings()
 
-    // random game (Should be changed to play_game())
-        bot()
-    // check if there is a winner
-    // finding_a_winner(gameboard.gameboard)
-    console.log(Gameboard.gameboard)
-    let theWinnerMark = finding_a_winner(Gameboard).winner_mark
-    update_score(theWinnerMark)
+//     // random game (Should be changed to play_game())
+//         bot()
+//     // check if there is a winner
+//     // finding_a_winner(gameboard.gameboard)
+//     console.log(Gameboard.gameboard)
+//     let theWinnerMark = finding_a_winner(Gameboard).winner_mark
+//     update_score(theWinnerMark)
+//     console.log(finding_a_winner(Gameboard).winner_found)
     
-}
+// }
+
+// for(let k = 0; k < 3; ++k){startGame()}
 
 
-for(let k = 0; k < 10; k++){startGame()}
+
 
 
 // Working on DOM and started styling
 
-const container = document.querySelector('.container')
+    const {Gameboard, finding_a_winner, fillingBoard,
+    update_score, bot} = tic_tac_toe_settings()
 
+
+
+
+    const container = document.querySelector('.container')
 for(let i = 0; i < 3; ++i){
     let row = document.createElement('div')
-
     for (let j =0; j < 3;++j){
-        
     const button = document.createElement('button')
     button.style.height = '165px'
     button.style.width = '165px'
-    // button.textContent = 'O'
     button.style.fontSize = '80px'
-
     row.appendChild(button)
     }
         container.appendChild(row)
 }
-const allButtons = document.querySelectorAll('button')
+    const allButtons = document.querySelectorAll('button')
     let switcher = true
+    new_game = Gameboard.gameboard
     allButtons.forEach((button)=>{
         button.addEventListener('click', ()=>{
             if(!button.textContent ){
                 if (switcher){
                     button.textContent = 'O'
                     switcher = false
+                    new_game.push(button.textContent)
                 }
                 else{
                 button.textContent = 'X'
                 switcher = true
+                    new_game.push(button.textContent)
                 }
+                console.log(Gameboard.gameboard)
             }
+        
         })
+        // console.log(new_game)
     })
 
-// console.log(allButtons)
+
+    function table_maker(filler){
+    
+   for(let i = 0; i < 9; i++){
+    let row = []
+    if (!row.length < 2){
+        row.push(filler)
+        new_game.push(row)  }
+        
+    }}
+
+ 
