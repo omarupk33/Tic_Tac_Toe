@@ -150,31 +150,44 @@ function bot(){
 // for(let k = 0; k < 3; ++k){startGame()}
 
 
-
-
-
 // Working on DOM and started styling
+//  Confused a lot with what I should do!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+function creating_dom_elements(){
 
     const {Gameboard, finding_a_winner, fillingBoard,
     update_score, bot} = tic_tac_toe_settings()
 
-
-
-
+        
     const container = document.querySelector('.container')
-for(let i = 0; i < 3; ++i){
-    let row = document.createElement('div')
-    for (let j =0; j < 3;++j){
+    let button_locations = {}
+    //Making buttons and assigning button's locations on the table
+        button_number = 0
+    for(let i = 0; i < 3; i++){
+        let row = document.createElement('div')
+        let row_location = i
+
+    for (let j = 0; j < 3;j++){
+        let column_location = j
+
     const button = document.createElement('button')
     button.style.height = '165px'
     button.style.width = '165px'
     button.style.fontSize = '80px'
+
+    button_locations[`button${button_number}`] = ({'row':row_location, 'column':column_location})
+    button.setAttribute('data-object-id', `button${button_number}`)
     row.appendChild(button)
+
+        console.log(button.dataset)
+        button_number++
     }
-        container.appendChild(row)
-}
-    const allButtons = document.querySelectorAll('button')
-    let switcher = true
+    container.appendChild(row)
+
+    }
+
+
+const allButtons = document.querySelectorAll('button')
+let switcher = true
     new_game = Gameboard.gameboard
     allButtons.forEach((button)=>{
         button.addEventListener('click', ()=>{
@@ -182,29 +195,31 @@ for(let i = 0; i < 3; ++i){
                 if (switcher){
                     button.textContent = 'O'
                     switcher = false
+
                     new_game.push(button.textContent)
+
                 }
                 else{
-                button.textContent = 'X'
-                switcher = true
+                    button.textContent = 'X'
+                    switcher = true
+
                     new_game.push(button.textContent)
+        
                 }
                 console.log(Gameboard.gameboard)
             }
-        
+    
         })
-        // console.log(new_game)
     })
 
 
-    function table_maker(filler){
-    
-   for(let i = 0; i < 9; i++){
-    let row = []
-    if (!row.length < 2){
-        row.push(filler)
-        new_game.push(row)  }
-        
-    }}
 
- 
+    return button_locations
+}
+button_location = creating_dom_elements()
+
+// let button_location = creating_with_dom()
+
+
+
+console.table(button_location)
