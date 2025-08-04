@@ -30,7 +30,7 @@ function tic_tac_toe_settings(){
         score: 0
     }
 
-function fillingBoard(filler = '#'){
+function fillingBoard(filler = ''){
     for(let i = 0; i < 3; i++){
     let row = []
     for(let j = 0; j < 3; j++){
@@ -59,6 +59,7 @@ function update_score(mark){
 
 // A winning condition and a score method are necessary
 // Winning conditions
+// The board is producing a new table
 function finding_a_winner(board){
     // Checking if anyone won in rows! 
     // Should all console.log replaced with booleans
@@ -75,7 +76,7 @@ function finding_a_winner(board){
         winner_mark = board.getCell(row,1) 
         winner_found = true
         break}
-    else{console.log('no on won in rows')
+    else{console.log('no one won in rows')
     }
     }
 
@@ -90,7 +91,7 @@ function finding_a_winner(board){
         winner_mark = board.getCell(1, column)
         winner_found = true
         break}
-    else{console.log('no on won in columns')
+    else{console.log('no one won in columns')
     }
 
     }
@@ -114,72 +115,60 @@ function finding_a_winner(board){
     return {winner_mark, winner_found}
 }
 
+//  Should be changed 
+
 function bot(){
-    fillingBoard()
-        for (row in Gameboard.gameboard){
-            for (column in Gameboard.gameboard){
-                if (Math.random() < 0.5) {
-                Gameboard.convertCell(row, column, player1.mark)
-                }
-                else {
-            Gameboard.convertCell(row, column, player2.mark)
-                }
-            }
-        }
+    // fillingBoard()
+    //     for (row in Gameboard.gameboard){
+    //         for (column in Gameboard.gameboard){
+    //             if (Math.random() < 0.5) {
+    //             Gameboard.convertCell(row, column, player1.mark)
+    //             }
+    //             else {
+    //         Gameboard.convertCell(row, column, player2.mark)
+    //             }
+    //         }
+    //     }
     }
-    return {Gameboard, finding_a_winner, fillingBoard,
+
+fillingBoard()
+
+    return {Gameboard, finding_a_winner,
          update_score, bot}
 }
 
-// Start game
-// function startGame(){
-//     const {Gameboard, finding_a_winner, 
-//     update_score, bot} = tic_tac_toe_settings()
-
-//     // random game (Should be changed to play_game())
-//         bot()
-//     // check if there is a winner
-//     // finding_a_winner(gameboard.gameboard)
-//     console.log(Gameboard.gameboard)
-//     let theWinnerMark = finding_a_winner(Gameboard).winner_mark
-//     update_score(theWinnerMark)
-//     console.log(finding_a_winner(Gameboard).winner_found)
-    
-// }
-
-// for(let k = 0; k < 3; ++k){startGame()}
 
 
 // Working on DOM and started styling
-//  Confused a lot with what I should do!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-function creating_dom_elements(){
+//  Finally!!
+function buttonSettings(){
 
-    const {Gameboard, finding_a_winner, fillingBoard,
+    const {Gameboard, finding_a_winner,
     update_score, bot} = tic_tac_toe_settings()
+    
+    let board = Gameboard
+    // const {winner_found, winner_mark} = finding_a_winner(board)
 
         
     const container = document.querySelector('.container')
     let button_locations = {}
     //Making buttons and assigning button's locations on the table
-        button_number = 0
     for(let i = 0; i < 3; i++){
         let row = document.createElement('div')
-        let row_location = i
+        let column_location = i
 
     for (let j = 0; j < 3;j++){
-        let column_location = j
+        let row_location = j
 
     const button = document.createElement('button')
     button.style.height = '165px'
     button.style.width = '165px'
     button.style.fontSize = '80px'
 
-    button_locations[`button${button_number}`] = ({'row':row_location, 'column':column_location})
-    button.setAttribute('data-object-id', `button${button_number}`)
-    row.appendChild(button)
+    button_locations[`button${i}${j}`] = ({'row':row_location, 'column':column_location})
+    button.setAttribute('data-item-id', `button${i}${j}`)
 
-        console.log(button.dataset)
-        button_number++
+    row.appendChild(button)
     }
     container.appendChild(row)
 
@@ -188,38 +177,54 @@ function creating_dom_elements(){
 
 const allButtons = document.querySelectorAll('button')
 let switcher = true
-    new_game = Gameboard.gameboard
+
     allButtons.forEach((button)=>{
+        let location = button.dataset.itemId
+        let selected_location = button_locations[location] 
         button.addEventListener('click', ()=>{
-            if(!button.textContent ){
+            if(!button.textContent){
                 if (switcher){
                     button.textContent = 'O'
                     switcher = false
 
-                    new_game.push(button.textContent)
+                    board.convertCell(selected_location.row,
+                         selected_location.column, button.textContent)
 
                 }
                 else{
                     button.textContent = 'X'
                     switcher = true
 
-                    new_game.push(button.textContent)
+                    board.convertCell(selected_location.row,
+                         selected_location.column, button.textContent)
         
                 }
-                console.log(Gameboard.gameboard)
             }
-    
+            console.log(board.gameboard)  
         })
     })
 
 
 
-    return button_locations
+    // return board.gameboard
 }
-button_location = creating_dom_elements()
 
-// let button_location = creating_with_dom()
+function main_loop(){
+
+        const {Gameboard, finding_a_winner,
+    update_score, bot} = tic_tac_toe_settings()
+    
+    let board = Gameboard
+    const {winner_found, winner_mark} = finding_a_winner(board)
+
+    // let board = buttonSettings()
+
+    //  Should learn what's going wrong here
+    while(!winner_found){
+        buttonSettings()
+    }
+    console.log(winner_mark)
 
 
-
-console.table(button_location)
+}
+main_loop()
