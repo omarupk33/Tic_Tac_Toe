@@ -18,7 +18,7 @@ function tic_tac_toe_settings(){
 
         getCell:(row, column)=>{
             return Gameboard.gameboard[row][column]
-        }
+        },
     }
     // I want to way to update the score without losing my track of the game
     const player1 = {
@@ -30,7 +30,7 @@ function tic_tac_toe_settings(){
         score: 0
     }
 
-function fillingBoard(filler = ''){
+function fillingBoard(filler = '#'){
     for(let i = 0; i < 3; i++){
     let row = []
     for(let j = 0; j < 3; j++){
@@ -57,27 +57,29 @@ function update_score(mark){
             }
         }
 
-// A winning condition and a score method are necessary
-// Winning conditions
-// The board is producing a new table
+// Gameboard.finding_a_winner = finding_a_winner
+
+
+fillingBoard()
+
+    return {Gameboard,
+         update_score, bot}
+}
+
+
+
+//  Should be given a complete table so it can check if there was a winner, if no, returns false
 function finding_a_winner(board){
-    // Checking if anyone won in rows! 
-    // Should all console.log replaced with booleans
     let winner_mark;
     let winner_found = false
-    
     for (row in board.gameboard){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
     board.getCell(row,1) === board.getCell(row,2)){
         
-        console.log(`${board.getCell(row,1)} is winner in rows`)
-
         winner_mark = board.getCell(row,1) 
         winner_found = true
         break}
-    else{console.log('no one won in rows')
-    }
     }
 
     // Checking if anyone won in columns! 
@@ -86,13 +88,9 @@ function finding_a_winner(board){
     &&
     board.getCell(1, column) === board.getCell(2, column)){
         
-        console.log(`${board.getCell(1,column)} is winner in columns`)
-        
         winner_mark = board.getCell(1, column)
         winner_found = true
         break}
-    else{console.log('no one won in columns')
-    }
 
     }
     // Checking if anyone won diagonally!
@@ -106,49 +104,20 @@ function finding_a_winner(board){
         &&
         board.getDiagonal(1) === board.getCell(0, 2)){
             
-        console.log(`${board.getDiagonal(1)} is winner diagonally`)
         winner_mark = board.getDiagonal(1)
         winner_found = true
         }
-    else{console.log('It is not diagonal')}
 
-    return {winner_mark, winner_found}
-}
+        if(!winner_found){
+            alert('A tie')
+            }
 
-//  Should be changed 
-
-function bot(){
-    // fillingBoard()
-    //     for (row in Gameboard.gameboard){
-    //         for (column in Gameboard.gameboard){
-    //             if (Math.random() < 0.5) {
-    //             Gameboard.convertCell(row, column, player1.mark)
-    //             }
-    //             else {
-    //         Gameboard.convertCell(row, column, player2.mark)
-    //             }
-    //         }
-    //     }
+        return {winner_mark, winner_found}
     }
 
-fillingBoard()
 
-    return {Gameboard, finding_a_winner,
-         update_score, bot}
-}
-
-
-
-// Working on DOM and started styling
-//  Finally!!
-function buttonSettings(){
-
-    const {Gameboard, finding_a_winner,
-    update_score, bot} = tic_tac_toe_settings()
-    
-    let board = Gameboard
-    // const {winner_found, winner_mark} = finding_a_winner(board)
-
+  
+function attach_to_dom(board){
         
     const container = document.querySelector('.container')
     let button_locations = {}
@@ -181,6 +150,8 @@ let switcher = true
     allButtons.forEach((button)=>{
         let location = button.dataset.itemId
         let selected_location = button_locations[location] 
+
+
         button.addEventListener('click', ()=>{
             if(!button.textContent){
                 if (switcher){
@@ -199,32 +170,29 @@ let switcher = true
                          selected_location.column, button.textContent)
         
                 }
+                // Should move this logic inside finding_a_winner
+            if(!board.gameboard.flatMap(innerarray => innerarray).includes('#')){
+                console.log(finding_a_winner(board).winner_found)
+                }
             }
-            console.log(board.gameboard)  
+ 
         })
     })
 
-
-
-    // return board.gameboard
 }
 
 function main_loop(){
 
-        const {Gameboard, finding_a_winner,
+        const {Gameboard,
     update_score, bot} = tic_tac_toe_settings()
-    
     let board = Gameboard
-    const {winner_found, winner_mark} = finding_a_winner(board)
 
-    // let board = buttonSettings()
-
-    //  Should learn what's going wrong here
-    while(!winner_found){
-        buttonSettings()
-    }
-    console.log(winner_mark)
-
-
+    attach_to_dom(board)
 }
 main_loop()
+
+//  Should update score everytime somone wins
+
+// Should work on the page version by providing user name inputs
+
+// Should add buttons to restart games without adding scores to no one
