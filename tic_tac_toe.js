@@ -1,5 +1,3 @@
-//  Honestly, there is a lot I need to fix up here.
-//  I don't like how the get functions are a part of the Gameboard object
 const scoreSave= {
     player1_score: 0,
     player2_score: 0}
@@ -20,7 +18,7 @@ function tic_tac_toe_settings(){
             return Gameboard.gameboard[row][column]
         },
     }
-    // I want to way to update the score without losing my track of the game
+
     const player1 = {
         mark: 'X',
         score: 0
@@ -57,13 +55,10 @@ function update_score(mark){
             }
         }
 
-// Gameboard.finding_a_winner = finding_a_winner
-
-
 fillingBoard()
 
     return {Gameboard,
-         update_score, bot}
+         update_score,}
 }
 
 
@@ -190,6 +185,7 @@ function main_loop(){
     attach_to_dom(board)
 }
 main_loop()
+
 
 //  Should update score everytime somone wins
 
