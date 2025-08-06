@@ -67,25 +67,28 @@ fillingBoard()
 function finding_a_winner(board){
     let winner_mark;
     let winner_found = false
+    
     for (row in board.gameboard){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
-    board.getCell(row,1) === board.getCell(row,2)){
+    board.getCell(row,1) === board.getCell(row,2)
+    ){
         
         winner_mark = board.getCell(row,1) 
         winner_found = true
-        break}
+       break}
     }
 
     // Checking if anyone won in columns! 
     for(column in board.gameboard){
     if (board.getCell(0, column) === board.getCell(1, column)
     &&
-    board.getCell(1, column) === board.getCell(2, column)){
+    board.getCell(1, column) === board.getCell(2, column)
+    ){
         
         winner_mark = board.getCell(1, column)
         winner_found = true
-        break}
+       break}
 
     }
     // Checking if anyone won diagonally!
@@ -97,17 +100,14 @@ function finding_a_winner(board){
     // For reversed diagonals
         board.getCell(2, 0) === board.getDiagonal(1)
         &&
-        board.getDiagonal(1) === board.getCell(0, 2)){
+        board.getDiagonal(1) === board.getCell(0, 2)
+        ){
             
         winner_mark = board.getDiagonal(1)
         winner_found = true
-        }
+    }
 
-        if(!winner_found){
-            alert('A tie')
-            }
-
-        return {winner_mark, winner_found}
+    return {winner_mark, winner_found}
     }
 
 
@@ -166,9 +166,9 @@ let switcher = true
         
                 }
                 // Should move this logic inside finding_a_winner
-            if(!board.gameboard.flatMap(innerarray => innerarray).includes('#')){
+            // if(!board.gameboard.flatMap(innerarray => innerarray).includes('#')){
                 console.log(finding_a_winner(board).winner_found)
-                }
+                // }
             }
  
         })
