@@ -62,8 +62,6 @@ fillingBoard()
 }
 
 
-
-//  Should be given a complete table so it can check if there was a winner, if no, returns false
 function finding_a_winner(board){
     let winner_mark;
     let winner_found = false
@@ -72,6 +70,8 @@ function finding_a_winner(board){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
     board.getCell(row,1) === board.getCell(row,2)
+    &&
+    board.getCell(row,0) !== '#' && board.getCell(row,1) !== '#' && board.getCell(row,2) !== '#'
     ){
         
         winner_mark = board.getCell(row,1) 
@@ -84,6 +84,8 @@ function finding_a_winner(board){
     if (board.getCell(0, column) === board.getCell(1, column)
     &&
     board.getCell(1, column) === board.getCell(2, column)
+    &&
+    board.getCell(0, column) !== '#' && board.getCell(1, column) !== '#' && board.getCell(2, column) !== '#'
     ){
         
         winner_mark = board.getCell(1, column)
@@ -96,11 +98,15 @@ function finding_a_winner(board){
     if (board.getDiagonal(center) === board.getDiagonal(center + 1)
         &&
         board.getDiagonal(center + 1) === board.getDiagonal(center + 2)
+        &&
+        board.getDiagonal(center) !== '#' && board.getDiagonal(center + 1) !== '#' && board.getDiagonal(center + 2) !== '#'
         ||
     // For reversed diagonals
         board.getCell(2, 0) === board.getDiagonal(1)
         &&
         board.getDiagonal(1) === board.getCell(0, 2)
+        &&
+        board.getCell(2, 0) !== '#' && board.getDiagonal(1) !== '#' && board.getCell(0, 2) !== '#'
         ){
             
         winner_mark = board.getDiagonal(1)
@@ -114,6 +120,8 @@ function finding_a_winner(board){
   
 function attach_to_dom(board){
         
+
+    const {update_score} = tic_tac_toe_settings()
     const container = document.querySelector('.container')
     let button_locations = {}
     //Making buttons and assigning button's locations on the table
@@ -148,7 +156,7 @@ let switcher = true
 
 
         button.addEventListener('click', ()=>{
-            if(!button.textContent){
+            if(!button.textContent && !finding_a_winner(board).winner_found){
                 if (switcher){
                     button.textContent = 'O'
                     switcher = false
@@ -165,12 +173,7 @@ let switcher = true
                          selected_location.column, button.textContent)
         
                 }
-                // Should move this logic inside finding_a_winner
-            // if(!board.gameboard.flatMap(innerarray => innerarray).includes('#')){
-                console.log(finding_a_winner(board).winner_found)
-                // }
             }
- 
         })
     })
 
@@ -179,11 +182,17 @@ let switcher = true
 function main_loop(){
 
         const {Gameboard,
-    update_score, bot} = tic_tac_toe_settings()
-    let board = Gameboard
+    update_score,} = tic_tac_toe_settings()
 
-    attach_to_dom(board)
+
+    if(winner_found){
+        console.log(`The score of the player is ${update_score(winner_mark)}`)
+        console.log(`is there a winner exist? ${winner_found} is ${winner_mark}`)
+    }
+
+    attach_to_dom(Gameboard)
 }
+
 main_loop()
 
 
