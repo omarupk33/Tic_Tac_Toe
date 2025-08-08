@@ -1,9 +1,18 @@
 body{
     background-color:brown;
     display: flex;
+    flex-direction: column ;
     justify-content:  center;
     
 }
+
+
+/* body > div{
+    display: flex;
+    flex-direction: row;
+    background-color: rebeccapurple;
+} */
+
 
 .container{
     background-color: blue;

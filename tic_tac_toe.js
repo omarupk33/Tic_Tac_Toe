@@ -155,8 +155,11 @@ let switcher = true
         let selected_location = button_locations[location] 
 
 
+
         button.addEventListener('click', ()=>{
-            if(!button.textContent && !finding_a_winner(board).winner_found){
+             let {winner_mark, winner_found} = finding_a_winner(board)
+
+            if(!button.textContent && !winner_found){
                 if (switcher){
                     button.textContent = 'O'
                     switcher = false
@@ -176,7 +179,6 @@ let switcher = true
             }
         })
     })
-
 }
 
 function main_loop(){
@@ -184,11 +186,6 @@ function main_loop(){
         const {Gameboard,
     update_score,} = tic_tac_toe_settings()
 
-
-    if(winner_found){
-        console.log(`The score of the player is ${update_score(winner_mark)}`)
-        console.log(`is there a winner exist? ${winner_found} is ${winner_mark}`)
-    }
 
     attach_to_dom(Gameboard)
 }
