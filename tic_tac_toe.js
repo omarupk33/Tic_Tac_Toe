@@ -5,7 +5,10 @@ const scoreSave= {
 
 function tic_tac_toe_settings(){
     const Gameboard = {
-        gameboard: [],
+        gameboard: [['#','#','#'],
+                    ['#','#','#'],
+                    ['#','#','#']],
+
         getDiagonal:(diagonal_cell)=>{
             return Gameboard.gameboard[diagonal_cell][diagonal_cell]
         },
@@ -17,55 +20,53 @@ function tic_tac_toe_settings(){
         getCell:(row, column)=>{
             return Gameboard.gameboard[row][column]
         },
-    }
+        
+        update_score:(mark)=>{
+            switch(mark){
+                case 'O':
+                    scoreSave.player1_score += 1
+                    player1.score = scoreSave.player1_score
+
+                    console.log(`The score is ${player1.score} for the player who plays ${player1.mark}`)
+                break
+
+                case 'X':
+                    scoreSave.player2_score += 1
+                    player2.score = scoreSave.player2_score
+                    console.log(`The score is ${player2.score} for the player who plays ${player2.mark}`)
+                    break
+                default:
+                console.log('It ended with a tie');
+                    }
+                }
+            }
 
     const player1 = {
-        mark: 'X',
+        mark: 'O',
         score: 0
     }
     const player2 = {
-        mark:'O',
+        mark:'X',
         score: 0
     }
 
-function fillingBoard(filler = '#'){
-    for(let i = 0; i < 3; i++){
-    let row = []
-    for(let j = 0; j < 3; j++){
-        row.push(filler)}
-    Gameboard.gameboard.push(row)}    
-    }
+// function fillingBoard(filler = '#'){
+//     for(let i = 0; i < 3; i++){
+//     let row = []
+//     for(let j = 0; j < 3; j++){
+//         row.push(filler)}
+//     Gameboard.gameboard.push(row)}    
+//     }
 
-function update_score(mark){
-    switch(mark){
-        case 'X':
-            scoreSave.player1_score += 1
-            player1.score = scoreSave.player1_score
 
-            console.log(`The score is ${player1.score} for the player who plays ${player1.mark}`)
-        break
+// fillingBoard()
 
-        case 'O':
-            scoreSave.player2_score += 1
-            player2.score = scoreSave.player2_score
-            console.log(`The score is ${player2.score} for the player who plays ${player2.mark}`)
-            break
-        default:
-        console.log('It ended with a tie');
-            }
-        }
-
-fillingBoard()
-
-    return {Gameboard,
-         update_score,}
+    return {Gameboard}
 }
 
 
 function finding_a_winner(board){
-    let winner_mark;
     let winner_found = false
-    
     for (row in board.gameboard){
     if (board.getCell(row,0) === board.getCell(row,1)
     &&
@@ -74,7 +75,6 @@ function finding_a_winner(board){
     board.getCell(row,0) !== '#' && board.getCell(row,1) !== '#' && board.getCell(row,2) !== '#'
     ){
         
-        winner_mark = board.getCell(row,1) 
         winner_found = true
        break}
     }
@@ -88,7 +88,6 @@ function finding_a_winner(board){
     board.getCell(0, column) !== '#' && board.getCell(1, column) !== '#' && board.getCell(2, column) !== '#'
     ){
         
-        winner_mark = board.getCell(1, column)
         winner_found = true
        break}
 
@@ -109,22 +108,21 @@ function finding_a_winner(board){
         board.getCell(2, 0) !== '#' && board.getDiagonal(1) !== '#' && board.getCell(0, 2) !== '#'
         ){
             
-        winner_mark = board.getDiagonal(1)
+
         winner_found = true
+
     }
 
-    return {winner_mark, winner_found}
+    return winner_found
     }
 
 
   
-function attach_to_dom(board){
+function attach_to_dom(board, stopGame){
         
-
-    const {update_score} = tic_tac_toe_settings()
     const container = document.querySelector('.container')
     let button_locations = {}
-    //Making buttons and assigning button's locations on the table
+
     for(let i = 0; i < 3; i++){
         let row = document.createElement('div')
         let column_location = i
@@ -136,6 +134,7 @@ function attach_to_dom(board){
     button.style.height = '165px'
     button.style.width = '165px'
     button.style.fontSize = '80px'
+    button.className = 'box'
 
     button_locations[`button${i}${j}`] = ({'row':row_location, 'column':column_location})
     button.setAttribute('data-item-id', `button${i}${j}`)
@@ -146,55 +145,90 @@ function attach_to_dom(board){
 
     }
 
-
-const allButtons = document.querySelectorAll('button')
-let switcher = true
-
+    const allButtons = document.querySelectorAll('.box')
+    let switcher = true     
+    let found; 
     allButtons.forEach((button)=>{
         let location = button.dataset.itemId
-        let selected_location = button_locations[location] 
-
-
-
+        let selected_location = button_locations[location]         
         button.addEventListener('click', ()=>{
-             let {winner_mark, winner_found} = finding_a_winner(board)
+            // should find a way to update the results of this outside of button loop
+            const winner_found = finding_a_winner(board)
 
-            if(!button.textContent && !winner_found){
+            if(!stopGame){
+             if(!button.textContent && !winner_found){
                 if (switcher){
                     button.textContent = 'O'
                     switcher = false
-
                     board.convertCell(selected_location.row,
-                         selected_location.column, button.textContent)
-
+                    selected_location.column, button.textContent)
                 }
                 else{
                     button.textContent = 'X'
                     switcher = true
-
                     board.convertCell(selected_location.row,
-                         selected_location.column, button.textContent)
-        
+                    selected_location.column, button.textContent)
                 }
             }
-        })
+            else{ found = winner_found}
+        }})
     })
+        // This code shoulb work somehow
+        if(found){
+        if(!switcher){
+            const player1 = document.querySelector('.player_score')
+            board.update_score('O')
+            player1.textContent = `Score: ${scoreSave.player1_score}`
+            stopGame = true
+            console.log('hey')
+        }
+            else if(switcher){
+            const player2 = document.querySelector('.opponent_score')
+
+            board.update_score('X')
+            player2.textContent = `Score: ${scoreSave.player2_score}`
+            stopGame = true
+            console.log('hey')
+
+        }
+        }
+    return allButtons
 }
 
 function main_loop(){
 
-        const {Gameboard,
-    update_score,} = tic_tac_toe_settings()
+    const {Gameboard} = tic_tac_toe_settings()
+    let board = Gameboard
+    let stopGame = false
+    let allButtons = attach_to_dom(board, stopGame)
 
+    const new_round = document.querySelector('.reset')
+    const new_game = document.querySelector('.new_game')
 
-    attach_to_dom(Gameboard)
+    new_round.addEventListener('click', ()=>{
+        board.gameboard = [['#','#','#'],
+                           ['#','#','#'],
+                           ['#','#','#']]
+
+        allButtons.forEach((button)=>{
+            button.textContent = ''
+        })
+            console.log(board)
+        stopGame = false
+    })
+
+    new_game.addEventListener('click', ()=>{
+
+        board.gameboard = [['#','#','#'],
+                           ['#','#','#'],
+                           ['#','#','#']]
+        allButtons.forEach((button)=>{ 
+            button.textContent = ''
+        })
+        scoreSave.player1_score, scoreSave.player2_score = 0, 0
+        console.log(board)
+        stopGame = false
+    })
 }
 
 main_loop()
-
-
-//  Should update score everytime somone wins
-
-// Should work on the page version by providing user name inputs
-
-// Should add buttons to restart games without adding scores to no one
