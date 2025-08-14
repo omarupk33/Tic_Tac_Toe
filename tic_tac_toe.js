@@ -20,48 +20,26 @@ function tic_tac_toe_settings(){
         getCell:(row, column)=>{
             return Gameboard.gameboard[row][column]
         },
-        
-        update_score:(mark)=>{
-            switch(mark){
-                case 'O':
-                    scoreSave.player1_score += 1
-                    player1.score = scoreSave.player1_score
-
-                    console.log(`The score is ${player1.score} for the player who plays ${player1.mark}`)
-                break
-
-                case 'X':
-                    scoreSave.player2_score += 1
-                    player2.score = scoreSave.player2_score
-                    console.log(`The score is ${player2.score} for the player who plays ${player2.mark}`)
-                    break
-                default:
-                console.log('It ended with a tie');
-                    }
-                }
-            }
+    }        
 
     const player1 = {
         mark: 'O',
-        score: 0
+        win_record: 0
     }
     const player2 = {
         mark:'X',
-        score: 0
+        win_record: 0
     }
 
-// function fillingBoard(filler = '#'){
-//     for(let i = 0; i < 3; i++){
-//     let row = []
-//     for(let j = 0; j < 3; j++){
-//         row.push(filler)}
-//     Gameboard.gameboard.push(row)}    
-//     }
+    const getWinRecord = (mark)=>{
+        if(mark === 'O'){
+            return player1.win_record
+        }
 
+        else{return player2.win_record}
+    }
 
-// fillingBoard()
-
-    return {Gameboard}
+    return {Gameboard,getWinRecord}
 }
 
 
@@ -108,9 +86,7 @@ function finding_a_winner(board){
         board.getCell(2, 0) !== '#' && board.getDiagonal(1) !== '#' && board.getCell(0, 2) !== '#'
         ){
             
-
         winner_found = true
-
     }
 
     return winner_found
@@ -145,53 +121,70 @@ function attach_to_dom(board, stopGame){
 
     }
 
+
+function update_score(mark){
+    switch(mark){
+        case 'O':
+        const player1 = document.querySelector('.player_score')
+        scoreSave.player1_score += 1
+        player1.textContent = `Score: ${scoreSave.player1_score}`
+    break
+ 
+        case 'X':
+            const player2 = document.querySelector('.opponent_score')
+            scoreSave.player2_score += 1
+            player2.textContent = `Score: ${scoreSave.player2_score}`
+
+        break
+
+        default:
+        console.log('It ended with a tie');
+            }
+        }
+
     const allButtons = document.querySelectorAll('.box')
     let switcher = true     
-    let found; 
+    let winner_mark; 
+    let found;
+    if(!stopGame){
     allButtons.forEach((button)=>{
         let location = button.dataset.itemId
-        let selected_location = button_locations[location]         
+        let selected_location = button_locations[location]
         button.addEventListener('click', ()=>{
-            // should find a way to update the results of this outside of button loop
             const winner_found = finding_a_winner(board)
 
-            if(!stopGame){
+            //  I don't know what to do exactly. I feel like I have been spinning in a circle for a week
+            if (winner_found){
+                stopGame = true
+                found = winner_found
+            }
+
              if(!button.textContent && !winner_found){
                 if (switcher){
                     button.textContent = 'O'
+                    winner_mark = 'O'
                     switcher = false
                     board.convertCell(selected_location.row,
                     selected_location.column, button.textContent)
                 }
                 else{
                     button.textContent = 'X'
+                    winner_mark = 'X'
                     switcher = true
                     board.convertCell(selected_location.row,
                     selected_location.column, button.textContent)
                 }
             }
-            else{ found = winner_found}
-        }})
+        })
     })
-        // This code shoulb work somehow
-        if(found){
-        if(!switcher){
-            const player1 = document.querySelector('.player_score')
-            board.update_score('O')
-            player1.textContent = `Score: ${scoreSave.player1_score}`
-            stopGame = true
-            console.log('hey')
-        }
-            else if(switcher){
-            const player2 = document.querySelector('.opponent_score')
+    }
+    else{
 
-            board.update_score('X')
-            player2.textContent = `Score: ${scoreSave.player2_score}`
-            stopGame = true
-            console.log('hey')
+        update_score(winner_mark)
+    
+    }
 
-        }
-        }
+
     return allButtons
 }
 
