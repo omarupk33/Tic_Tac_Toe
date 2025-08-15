@@ -94,7 +94,7 @@ function finding_a_winner(board){
 
 
   
-function attach_to_dom(board, stopGame){
+function attach_to_dom(board){
         
     const container = document.querySelector('.container')
     let button_locations = {}
@@ -142,86 +142,94 @@ function update_score(mark){
             }
         }
 
-    const allButtons = document.querySelectorAll('.box')
-    let switcher = true     
-    let winner_mark; 
-    let found;
-    if(!stopGame){
-    allButtons.forEach((button)=>{
-        let location = button.dataset.itemId
-        let selected_location = button_locations[location]
-        button.addEventListener('click', ()=>{
-            const winner_found = finding_a_winner(board)
+let allButtons = document.querySelectorAll('.box');
+let switcher = true;     
+let winner_mark; 
+let stopGame = false; 
 
-            //  I don't know what to do exactly. I feel like I have been spinning in a circle for a week
-            if (winner_found){
-                stopGame = true
-                found = winner_found
-            }
+allButtons.forEach((button) => {
+    const location = button.dataset.itemId;
+    const selected_location = button_locations[location];
 
-             if(!button.textContent && !winner_found){
-                if (switcher){
-                    button.textContent = 'O'
-                    winner_mark = 'O'
-                    switcher = false
-                    board.convertCell(selected_location.row,
-                    selected_location.column, button.textContent)
-                }
-                else{
-                    button.textContent = 'X'
-                    winner_mark = 'X'
-                    switcher = true
-                    board.convertCell(selected_location.row,
-                    selected_location.column, button.textContent)
-                }
-            }
-        })
+    button.addEventListener('click', () => {
+        if (stopGame || button.textContent) return;
+
+
+        if (switcher) {
+            button.textContent = 'O';
+            winner_mark = 'O';
+            switcher = false;
+        } else {
+            button.textContent = 'X';
+            winner_mark = 'X';
+            switcher = true;
+        }
+
+        board.convertCell(selected_location.row, selected_location.column, button.textContent);
+
+        const winner_found = finding_a_winner(board);
+        if (winner_found) {
+            stopGame = true;
+            update_score(winner_mark);
+        }
     })
-    }
-    else{
-
-        update_score(winner_mark)
-    
-    }
-
+})
 
     return allButtons
 }
 
+
+function reset_game(allButtons, board){
+
+    const reset_round = document.querySelector('.reset')
+    const new_game = document.querySelector('.new_game')
+
+  reset_round.addEventListener('click', ()=>{
+
+    board.gameboard = [['#','#','#'],
+                       ['#','#','#'],
+                       ['#','#','#']]
+
+        allButtons.forEach((button)=>{ 
+            button.remove()
+        })
+
+        console.table(board.gameboard)
+    })
+
+  new_game.addEventListener('click', ()=>{
+
+    board.gameboard = [['#','#','#'],
+                       ['#','#','#'],
+                       ['#','#','#']]
+        allButtons.forEach((button)=>{ 
+            button.remove()
+        })
+
+        scoreSave.player1_score, scoreSave.player2_score = 0, 0
+        console.table(board.gameboard)
+    })
+}
+
+
 function main_loop(){
+
+
+
 
     const {Gameboard} = tic_tac_toe_settings()
     let board = Gameboard
-    let stopGame = false
-    let allButtons = attach_to_dom(board, stopGame)
+    let start_game = true
 
-    const new_round = document.querySelector('.reset')
-    const new_game = document.querySelector('.new_game')
+    // while(start_game){
+    let allButtons = attach_to_dom(board)    
+    reset_game(allButtons, board)
+    let input = prompt('Want to stop the game? ', 'yes')
+    if(input === 'yes'){
+        start_game = false
+    }
+    // }
 
-    new_round.addEventListener('click', ()=>{
-        board.gameboard = [['#','#','#'],
-                           ['#','#','#'],
-                           ['#','#','#']]
-
-        allButtons.forEach((button)=>{
-            button.textContent = ''
-        })
-            console.log(board)
-        stopGame = false
-    })
-
-    new_game.addEventListener('click', ()=>{
-
-        board.gameboard = [['#','#','#'],
-                           ['#','#','#'],
-                           ['#','#','#']]
-        allButtons.forEach((button)=>{ 
-            button.textContent = ''
-        })
-        scoreSave.player1_score, scoreSave.player2_score = 0, 0
-        console.log(board)
-        stopGame = false
-    })
 }
 
 main_loop()
