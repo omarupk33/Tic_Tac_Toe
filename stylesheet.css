@@ -23,7 +23,6 @@ body > div{
     margin: 20px;
 }
 
-
 .container{
     background-color: blue;
     border: 10px burlywood solid;
@@ -31,8 +30,6 @@ body > div{
     height: 500px;
     margin-top:60px;
     display: flex;
-    /* justify-content: center;
-    align-items: center; */
 }
 
 
@@ -49,4 +46,15 @@ body > div{
 #player > *, #opponent > *{
     display: flex;
     margin: 10px;    
+}
+
+
+input:focus{
+}
+input:di{
+    
+}
+
+input{
+    
 }

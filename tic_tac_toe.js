@@ -93,9 +93,7 @@ function finding_a_winner(board){
     }
 
 
-  
-function attach_to_dom(board){
-        
+function button_setting(){
     const container = document.querySelector('.container')
     let button_locations = {}
 
@@ -118,10 +116,15 @@ function attach_to_dom(board){
     row.appendChild(button)
     }
     container.appendChild(row)
-
     }
 
+    return button_locations
+}
 
+
+  
+function attach_to_dom(board){
+        
 function update_score(mark){
     switch(mark){
         case 'O':
@@ -138,98 +141,123 @@ function update_score(mark){
         break
 
         default:
-        console.log('It ended with a tie');
+        console.log('It ended with a tie')
             }
         }
 
-let allButtons = document.querySelectorAll('.box');
-let switcher = true;     
-let winner_mark; 
-let stopGame = false; 
+
+
+//  This loop is not runnning with the updated version via new_round, new_game
+function logic_run(){
+let button_locations = button_setting()
+let allButtons = document.querySelectorAll('.box')
+let switcher = true
+let winner_mark
+let stopGame = false;
 
 allButtons.forEach((button) => {
-    const location = button.dataset.itemId;
-    const selected_location = button_locations[location];
+    const location = button.dataset.itemId
+    const selected_location = button_locations[location]
 
     button.addEventListener('click', () => {
-        if (stopGame || button.textContent) return;
+        if (stopGame || button.textContent) return
 
 
         if (switcher) {
-            button.textContent = 'O';
-            winner_mark = 'O';
-            switcher = false;
+            button.textContent = 'O'
+            winner_mark = 'O'
+            switcher = false
         } else {
-            button.textContent = 'X';
-            winner_mark = 'X';
-            switcher = true;
+            button.textContent = 'X'
+            winner_mark = 'X'
+            switcher = true
         }
 
         board.convertCell(selected_location.row, selected_location.column, button.textContent);
 
-        const winner_found = finding_a_winner(board);
+        const winner_found = finding_a_winner(board)
         if (winner_found) {
-            stopGame = true;
-            update_score(winner_mark);
+            stopGame = true
+            update_score(winner_mark)
         }
     })
 })
-
-    return allButtons
 }
 
-
-function reset_game(allButtons, board){
-
+    const container = document.querySelector('.container')
     const reset_round = document.querySelector('.reset')
     const new_game = document.querySelector('.new_game')
 
-  reset_round.addEventListener('click', ()=>{
 
-    board.gameboard = [['#','#','#'],
-                       ['#','#','#'],
-                       ['#','#','#']]
+    reset_round.addEventListener('click', ()=>{
 
-        allButtons.forEach((button)=>{ 
-            button.remove()
+        board.gameboard = [['#','#','#'],
+                           ['#','#','#'],
+                           ['#','#','#']]
+
+    if (container === '' ){
+            container.innerHTML = ''    
+            logic_run()
+            stopGame = false 
+        }})
+
+    new_game.addEventListener('click', ()=>{
+
+        board.gameboard = [['#','#','#'],
+                           ['#','#','#'],
+                           ['#','#','#']]
+                        
+            container.innerHTML = ''
+            logic_run()
+
+            scoreSave.player1_score = 0
+            scoreSave.player2_score = 0
+        const player1 = document.querySelector('.player_score')
+        const player2 = document.querySelector('.opponent_score')
+        player1.textContent = `Score:`
+        player2.textContent = `Score:`
+
+            stopGame = false 
         })
-
-        console.table(board.gameboard)
-    })
-
-  new_game.addEventListener('click', ()=>{
-
-    board.gameboard = [['#','#','#'],
-                       ['#','#','#'],
-                       ['#','#','#']]
-        allButtons.forEach((button)=>{ 
-            button.remove()
-        })
-
-        scoreSave.player1_score, scoreSave.player2_score = 0, 0
-        console.table(board.gameboard)
-    })
 }
 
 
 function main_loop(){
 
-
-
-
     const {Gameboard} = tic_tac_toe_settings()
     let board = Gameboard
-    let start_game = true
 
-    // while(start_game){
-    let allButtons = attach_to_dom(board)    
-    reset_game(allButtons, board)
-    let input = prompt('Want to stop the game? ', 'yes')
-    if(input === 'yes'){
-        start_game = false
-    }
-    // }
+    attach_to_dom(board)
 
 }
 
 main_loop()
+
+
+//  Last part of the code then done
+document.addEventListener('DOMContentLoaded', function() {
+    const myInputs = document.querySelectorAll('input')
+    const myForm = document.querySelectorAll('form')
+    myInputs.forEach((input)=>{
+        input.addEventListener('focus', function() {
+        input.style.background = 'red'
+        myForm.submit()
+    })
+
+    });
+} 
+);
+
+
+
+// function player_name_select(){
+//     const inputs = document.querySelectorAll('input')
+//     for( input of inputs){
+//         input.focus =() =>{
+//             input.sumbit()
+//         }
+//     }
+// }
+
+
+// player_name_select()
