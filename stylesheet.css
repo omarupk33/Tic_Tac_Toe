@@ -1,5 +1,5 @@
 body{
-    background-color:brown;
+    background-color:rebeccapurple;
     display: flex;
     flex-direction: column ;
     justify-content:  center;
@@ -9,7 +9,7 @@ body{
 
 body > div{
     display: flex;
-    background-color: rebeccapurple;
+
     justify-content: center;
 }
 
@@ -48,13 +48,7 @@ body > div{
     margin: 10px;    
 }
 
-
-input:focus{
-}
-input:di{
-    
-}
-
 input{
-    
+    font-size: 1em;
 }
+

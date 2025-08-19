@@ -234,13 +234,14 @@ function main_loop(){
 main_loop()
 
 
-//  Last part of the code then done
 document.addEventListener('DOMContentLoaded', function() {
     const myInputs = document.querySelectorAll('input')
     const myForm = document.querySelectorAll('form')
     myInputs.forEach((input)=>{
         input.addEventListener('focus', function() {
-        input.style.background = 'red'
+        input.style.background = 'rebeccapurple'
+        input.style.color = 'white'
+
         myForm.submit()
     })
 
@@ -248,16 +249,3 @@ document.addEventListener('DOMContentLoaded', function() {
 } 
 );
 
-
-
-// function player_name_select(){
-//     const inputs = document.querySelectorAll('input')
-//     for( input of inputs){
-//         input.focus =() =>{
-//             input.sumbit()
-//         }
-//     }
-// }
-
-
-// player_name_select()
